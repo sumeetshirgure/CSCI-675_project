@@ -9,7 +9,7 @@
     USC, Spring 2022
   </author-affiliation>>>>
 
-  <abstract-data|<abstract|This term paper documents and discusses existing
+  <abstract-data|<abstract|This article documents and discusses existing
   methods and some recent developments in the field of quantum computing in
   solving combinatorial and optimization problems.>>
 
@@ -23,24 +23,26 @@
 
   This paper attempts to discuss these topics at a high level without going
   too deep into the technical details, and is supposed to be accessible to
-  anyone without a thorough background in quantum computing. Section
-  <reference|section_qcintro> gives a bare minimum introduction to quantum
-  mechanics and quantum computation, and only requires a working knowledge of
-  linear algebra. Section <reference|section_qctools> introduces some
-  standard tools in quantum computing. And the later sections each discuss a
-  relevent topic in adequate detail. A few topics that serve to tie some
-  loose ends are deferred to the appendices. A reader uninterested in quantum
-  computing might still find the contents of section <reference|section_sdp>
-  of considerable interest, because the majority of that discussion is in the
+  anyone without a background in quantum computing.
+
+  Section <reference|section_qcintro> gives a bare minimum introduction to
+  quantum mechanics and quantum computation, and only requires a working
+  knowledge of complex valued linear algebra. <cite|axler> is a great
+  reference. Section <reference|section_qctools> introduces some standard
+  tools in quantum computing. And the later sections each discuss a relevent
+  topic in adequate detail. A few topics that serve to tie some loose ends
+  are deferred to the appendices. A reader uninterested in quantum computing
+  might still find the contents of section <reference|section_sdp> of
+  considerable interest, because the majority of that discussion is in the
   classical domain.
 
   <section|A crash course in quantum computing ><label|section_qcintro>
 
   A short introduction to quantum computing is <cite|qcintro>. Here we review
-  some basic concepts at the bare minimum, which are discussed in any text
-  <cite|mike_and_ike> on the subject. We will start by reviewing three basic
-  postulates of quantum mechanics \U (a) state description, (b) state
-  collapse and measurement statistics, and (c) evolution.
+  some basic concepts at the bare minimum, which are discussed in any text,
+  such as <cite|mike_and_ike>, on the subject. We will start by reviewing
+  three basic postulates of quantum mechanics \U (a) state description, (b)
+  state collapse and measurement statistics, and (c) evolution.
 
   <subsection|Postulates>
 
@@ -54,10 +56,11 @@
 
   As a mathematical abstraction, every qubit state is given by a normalized
   2D complex vector <math|<matrix|<tformat|<table|<row|<cell|\<alpha\>>>|<row|<cell|\<beta\>>>>>>=\<alpha\><matrix|<tformat|<table|<row|<cell|1>>|<row|<cell|0>>>>>+\<beta\><matrix|<tformat|<table|<row|<cell|0>>|<row|<cell|1>>>>>=\<alpha\><around*|\||0|\<rangle\>>+\<beta\><around*|\||1|\<rangle\>>,<around*|\||\<alpha\>|\|><rsup|2>+<around*|\||\<beta\>|\|><rsup|2>=1>.
-  <math|<around*|\||0|\<rangle\>><infix-and><around*|\||1|\<rangle\>>>
-  (section <reference|bra_ket>) being a basis of <math|\<bbb-C\><rsup|2>> are
-  also called the <with|font-shape|italic|computational basis> states. When
-  parametrizing the qubit state by <math|e<rsup|i\<gamma\>><around*|(|cos<around*|(|\<theta\>|)><around|\||0|\<rangle\>>+e<rsup|i\<varphi\>>sin<around*|(|\<theta\>|)><around*|\||1|\<rangle\>>|)>>,
+  <math|<around*|\||0|\<rangle\>><infix-and><around*|\||1|\<rangle\>>> (see
+  section <reference|bra_ket> for notation) being a basis of
+  <math|\<bbb-C\><rsup|2>> are also called the
+  <with|font-shape|italic|computational basis> states. When parametrizing the
+  qubit state by <math|e<rsup|i\<gamma\>><around*|(|cos<around*|(|\<theta\>|)><around|\||0|\<rangle\>>+e<rsup|i\<varphi\>>sin<around*|(|\<theta\>|)><around*|\||1|\<rangle\>>|)>>,
   we can ignore <math|\<gamma\>>, called the global phase, as we will see it
   has no <with|font-shape|italic|observable effects>.
 
@@ -66,12 +69,11 @@
   operators acting on <math|\<cal-H\>>. An important example is the energy
   operator <math|<wide|H|^>> - the Hamiltonian. A fundamental idea in quantum
   mechanics is that the eigenvalues of any observable correspond to
-  physically observed quantities. Since these must be real even for complex
+  physically observed quantities. Since these should be real even for complex
   vector states, the observables are always Hermitian, i.e they must have
-  real eigenvalues : <math|<wide|H|^><rsup|\<dagger\>>=<wide|H|^>>.
-
-  This possibility of a discrete nature of energy eigenvalues is at the heart
-  of quantum mechanics.
+  real eigenvalues : <math|<wide|H|^><rsup|\<dagger\>>=<wide|H|^>>. This
+  possibility of a discrete nature of energy eigenvalues is at the heart of
+  quantum mechanics.
 
   The eigenvectors corresponding to an operator are called its
   <with|font-shape|italic|eigenstates>. If a quantum system
@@ -92,18 +94,20 @@
   E.g the qubit state <math|\<alpha\><rsub|0><around*|\||0|\<rangle\>>+\<alpha\><rsub|1><around*|\||1|\<rangle\>>>
   when measured in the computational basis is put in the state
   <math|<around*|\||j|\<rangle\>>> after measurement with probability
-  <math|<around*|\||\<alpha\><rsub|j>|\|><rsup|2>>, and we observe <math|j>
-  as some physical phenomenon.
+  <math|<around*|\||\<alpha\><rsub|j>|\|><rsup|2>>, and we observe the event
+  labeled <math|j> in the form of some physical phenomenon.
 
-  Finally, the continuous time evolution of a closed quantum system is
+  Lastly, the continuous time evolution of a closed quantum system is
   described by the <math|Schr<math|<wide|o|\<ddot\>>>dinger> equation <math|i
   \<hbar\><frac|d|d t><around*|\||\<psi\><around*|(|t|)>|\<rangle\>>=<wide|H|^><around*|\||\<psi\><around*|(|t|)>|\<rangle\>>>,
   <math|<wide|H|^>> being the energy operator.
-  <math|\<Rightarrow\><around*|\||\<psi\><around*|(|t|)>|\<rangle\>>=e<rsup|-i
+
+  The is a linear differential equation and is solved by
+  <math|<around*|\||\<psi\><around*|(|t|)>|\<rangle\>>=e<rsup|-i
   <wide|H|^>t/\<hbar\>><around*|\||\<psi\><around*|(|0|)>|\<rangle\>>>, where
-  the exponentiation is the usual analytic function of the operator
-  <math|<wide|H|^>>. The Hamiltonian is <with|font-shape|italic|time-independent>
-  since closed systems have conserved energy.
+  the exponentiation is the usual function of the operator <math|<wide|H|^>>.
+  The Hamiltonian doesn't change with time because closed systems have
+  conserved energy.
 
   <math|U<around*|(|t|)>=e<rsup|-i <wide|H|^>t/\<hbar\>>> is a unitary
   operator, as it should be to keep <math|\<psi\>> normalized \U
@@ -118,8 +122,8 @@
   The exponential of a skew-Hermitian operator is always unitary. As we will
   see, quantum logic gates must also be unitary. This is a key necessary
   condition to prevent loss of information, which is essential when we
-  consider thermally isolated closed systems \U a consequence known as
-  Landauer's principle <cite|heat>.
+  consider thermally isolated closed systems \U a consequence of what is
+  known as Landauer's principle <cite|heat>.
 
   <subsection|The quantum gate model>
 
@@ -131,12 +135,14 @@
   <subsubsection|Composite states>
 
   The main idea is to take products of the corresponding Hilbert spaces. The
-  composite state is then the tensor (Kronecker) product of the two states.
+  composite state is then the tensor product (also called the Kronecker
+  product) of the two states.
+
   E.g if two qubits are in states <math|<matrix|<tformat|<table|<row|<cell|\<alpha\>>>|<row|<cell|\<beta\>>>>>>=\<alpha\><around*|\||0|\<rangle\>>+\<beta\><around*|\||1|\<rangle\>>>
   and <math|<matrix|<tformat|<table|<row|<cell|\<mu\>>>|<row|<cell|\<nu\>>>>>>=\<mu\><around*|\||0|\<rangle\>>+\<nu\><around*|\||1|\<rangle\>>>,
-  the composite system is in the state <math|<matrix|<tformat|<table|<row|<cell|\<alpha\>>>|<row|<cell|\<beta\>>>>>>\<otimes\><matrix|<tformat|<table|<row|<cell|\<mu\>>>|<row|<cell|\<nu\>>>>>>=<matrix|<tformat|<table|<row|<cell|\<alpha\>\<mu\>>>|<row|<cell|\<alpha\>\<nu\>>>|<row|<cell|\<beta\>\<mu\>>>|<row|<cell|\<beta\>\<nu\>>>>>>>.
+  the composite system is in the state <math|<matrix|<tformat|<table|<row|<cell|\<alpha\>>>|<row|<cell|\<beta\>>>>>>\<otimes\><matrix|<tformat|<table|<row|<cell|\<mu\>>>|<row|<cell|\<nu\>>>>>>=<matrix|<tformat|<table|<row|<cell|\<alpha\>\<mu\>>>|<row|<cell|\<alpha\>\<nu\>>>|<row|<cell|\<beta\>\<mu\>>>|<row|<cell|\<beta\>\<nu\>>>>>>>
 
-  <math|=<around*|(|\<alpha\><around*|\||0|\<rangle\>>+\<beta\><around*|\||1|\<rangle\>>|)>\<otimes\><around*|(|\<mu\><around*|\||0|\<rangle\>>+\<nu\><around*|\||1|\<rangle\>>|)>=\<alpha\>\<mu\><around*|\||0|\<rangle\>>\<otimes\><around*|\||0|\<rangle\>>+\<alpha\>\<nu\><around*|\||0|\<rangle\>>\<otimes\><around*|\||1|\<rangle\>>+\<beta\>\<mu\><around*|\||1|\<rangle\>>\<otimes\><around*|\||0|\<rangle\>>+\<beta\>\<nu\><around*|\||1|\<rangle\>>\<otimes\><around*|\||1|\<rangle\>>>
+  \ <math|=<around*|(|\<alpha\><around*|\||0|\<rangle\>>+\<beta\><around*|\||1|\<rangle\>>|)>\<otimes\><around*|(|\<mu\><around*|\||0|\<rangle\>>+\<nu\><around*|\||1|\<rangle\>>|)>=\<alpha\>\<mu\><around*|\||0|\<rangle\>>\<otimes\><around*|\||0|\<rangle\>>+\<alpha\>\<nu\><around*|\||0|\<rangle\>>\<otimes\><around*|\||1|\<rangle\>>+\<beta\>\<mu\><around*|\||1|\<rangle\>>\<otimes\><around*|\||0|\<rangle\>>+\<beta\>\<nu\><around*|\||1|\<rangle\>>\<otimes\><around*|\||1|\<rangle\>>>
 
   <math|<around*|\||j|\<rangle\>>\<otimes\><around*|\||k|\<rangle\>>> is
   abbreviated as <math|<around*|\||j k|\<rangle\>>>. Sequences of qubits in
@@ -152,17 +158,17 @@
   states>. There exist states like <math|<frac|<around*|\||00|\<rangle\>>+<around*|\||11|\<rangle\>>|<sqrt|2>>>
   that can't be expressed as the tensor product of two states. Such entangled
   states are physically realizable, and imply that measuring one qubit will
-  immediately tell us about the state of the other. Even if this state itself
-  is not a product of two single-qubit states, it does lie in the product
-  Hilbert space of the two qubits, which is what the postulate requires.
+  immediately tell us about the state of the other when it is measured. Even
+  if this state itself is not a product of two single-qubit states, it does
+  lie in the product Hilbert space of the two qubits, which is what the
+  postulate requires.
 
   Measuring just the first qubit of <math|<big|sum><rsub|p q>\<alpha\><rsub|p
   q><around*|\||p q|\<rangle\>>> results in an observation corresponding to
   the <math|<around*|\||0|\<rangle\>>> state, the final state is
   <math|<frac|<big|sum><rsub|q>\<alpha\><rsub|0 q><around*|\||0
   q|\<rangle\>>|<big|sum><rsub|q><around*|\||\<alpha\><rsub|0>q|\|><rsup|2>>>.
-  The probability of this happening is itself
-  <math|<big|sum><rsub|q><around*|\||\<alpha\><rsub|0q>|\|><rsup|2>>.
+  The probability of this happening is <math|<big|sum><rsub|q><around*|\||\<alpha\><rsub|0q>|\|><rsup|2>>.
 
   <subsubsection|Qubit gates><label|qubit_gates>
 
@@ -192,7 +198,7 @@
   set. And even if the number of unitary transformations is uncountably
   infinite, there always exist modest-sized finite gate sequences that
   approximate any desired operation up to an acceptable error in the operator
-  norm \U a fact known as the Solovay-Kitaev theorem
+  norm \U this result is given by the Solovay-Kitaev theorem
   <cite|solovay_kitaev_algorithm>.
 
   Quantum gates are a generalization of classical gates. However, classical
@@ -224,14 +230,14 @@
 
     \;
   <|big-figure>
-    <label|ckt_diags>
+    <label|ckt_diags>Circuit diagrams of common operations
   </big-figure>
 
   \;
 
   Like the CNOT gate, we may condition any unitary on the state of an
   external qubit, depicted diagramatically as in figure
-  <reference|ckt_diags>(a). <math|<around*|\||c|\<rangle\>>\<oplus\><around*|\||x|\<rangle\>>\<longrightarrow\><around*|\||c|\<rangle\>>\<oplus\>U<rsup|c><around*|\||x|\<rangle\>>>;
+  <reference|ckt_diags>(a). <math|<around*|\||c|\<rangle\>>\<otimes\><around*|\||x|\<rangle\>>\<longrightarrow\><around*|\||c|\<rangle\>>\<otimes\>U<rsup|c><around*|\||x|\<rangle\>>>;
   <math|U> is applied only when the control qubit is
   <math|<around*|\||1|\<rangle\>>>. The equivalent unitary is
   <math|<around*|(|<around*|\||0|\<rangle\>><around|\<langle\>|0|\|>\<otimes\>I+<around|\||1|\<rangle\>><around|\<langle\>|1|\|>\<otimes\>U|)>>
@@ -1068,7 +1074,7 @@
   <page-break>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|35>
+    <\bib-list|36>
       <bibitem*|1><label|bib-qml_rtfp>Scott Aaronson. <newblock>Read the fine
       print. <newblock><with|font-shape|italic|Nature Physics>, 11:291\U293,
       04 2015.<newblock>
@@ -1096,147 +1102,152 @@
       programs. <newblock><with|font-shape|italic|J. ACM>, 63(2), may
       2016.<newblock>
 
-      <bibitem*|7><label|bib-revcomp>C.<nbsp>H.<nbsp>Bennett.
+      <bibitem*|7><label|bib-axler>Sheldon<nbsp>Jay Axler.
+      <newblock><with|font-shape|italic|Linear Algebra Done Right>.
+      <newblock>Undergraduate Texts in Mathematics. Springer, New York,
+      1997.<newblock>
+
+      <bibitem*|8><label|bib-revcomp>C.<nbsp>H.<nbsp>Bennett.
       <newblock>Logical reversibility of computation.
       <newblock><with|font-shape|italic|IBM Journal of Research and
       Development>, 17(6):525\U532, 1973.<newblock>
 
-      <bibitem*|8><label|bib-Berry_2014_diffeq>Dominic<nbsp>W Berry.
+      <bibitem*|9><label|bib-Berry_2014_diffeq>Dominic<nbsp>W Berry.
       <newblock>High-order quantum algorithm for solving linear differential
       equations. <newblock><with|font-shape|italic|Journal of Physics A:
       Mathematical and Theoretical>, 47(10):105301, feb 2014.<newblock>
 
-      <bibitem*|9><label|bib-Berry_2006>Dominic<nbsp>W.<nbsp>Berry, Graeme
+      <bibitem*|10><label|bib-Berry_2006>Dominic<nbsp>W.<nbsp>Berry, Graeme
       Ahokas, Richard Cleve<localize|, and >Barry<nbsp>C.<nbsp>Sanders.
       <newblock>Efficient quantum algorithms for simulating sparse
       hamiltonians. <newblock><with|font-shape|italic|Communications in
       Mathematical Physics>, 270(2):359\U371, dec 2006.<newblock>
 
-      <bibitem*|10><label|bib-Boyd2004-hu>Stephen Boyd<localize| and >Lieven
+      <bibitem*|11><label|bib-Boyd2004-hu>Stephen Boyd<localize| and >Lieven
       Vandenberghe. <newblock><with|font-shape|italic|Convex Optimization>.
       <newblock>Cambridge University Press, Cambridge, England, mar
       2004.<newblock>
 
-      <bibitem*|11><label|bib-qsdp2>Fernando<nbsp>G.<nbsp>S.<nbsp>L.<nbsp>Brandão,
+      <bibitem*|12><label|bib-qsdp2>Fernando<nbsp>G.<nbsp>S.<nbsp>L.<nbsp>Brandão,
       Amir Kalev, Tongyang Li, Cedric<nbsp>Yen-Yu Lin,
       Krysta<nbsp>M.<nbsp>Svore<localize|, and >Xiaodi Wu. <newblock>Quantum
       sdp solvers: large speed-ups, optimality, and applications to quantum
       learning. <newblock>2017.<newblock>
 
-      <bibitem*|12><label|bib-qsdp>Fernando<nbsp>G.<nbsp>S.<nbsp>L.<nbsp>Brandao<localize|
+      <bibitem*|13><label|bib-qsdp>Fernando<nbsp>G.<nbsp>S.<nbsp>L.<nbsp>Brandao<localize|
       and >Krysta Svore. <newblock>Quantum speed-ups for semidefinite
       programming. <newblock>2016.<newblock>
 
-      <bibitem*|13><label|bib-Brassard_2002>Gilles Brassard, Peter Høyer,
+      <bibitem*|14><label|bib-Brassard_2002>Gilles Brassard, Peter Høyer,
       Michele Mosca<localize|, and >Alain Tapp. <newblock>Quantum amplitude
       amplification and estimation. <newblock>2002.<newblock>
 
-      <bibitem*|14><label|bib-Childs_2009>Andrew<nbsp>M.<nbsp>Childs.
+      <bibitem*|15><label|bib-Childs_2009>Andrew<nbsp>M.<nbsp>Childs.
       <newblock>On the relationship between continuous- and discrete-time
       quantum walk. <newblock><with|font-shape|italic|Communications in
       Mathematical Physics>, 294(2):581\U603, oct 2009.<newblock>
 
-      <bibitem*|15><label|bib-Childs_2002>Andrew<nbsp>M.<nbsp>Childs, Edward
+      <bibitem*|16><label|bib-Childs_2002>Andrew<nbsp>M.<nbsp>Childs, Edward
       Farhi<localize|, and >Sam Gutmann. <newblock><with|font-shape|italic|Quantum
       Information Processing>, 1(1/2):35\U43, 2002.<newblock>
 
-      <bibitem*|16><label|bib-Childs_2017>Andrew<nbsp>M.<nbsp>Childs, Robin
+      <bibitem*|17><label|bib-Childs_2017>Andrew<nbsp>M.<nbsp>Childs, Robin
       Kothari<localize|, and >Rolando<nbsp>D.<nbsp>Somma. <newblock>Quantum
       algorithm for systems of linear equations with exponentially improved
       dependence on precision. <newblock><with|font-shape|italic|SIAM Journal
       on Computing>, 46(6):1920\U1950, jan 2017.<newblock>
 
-      <bibitem*|17><label|bib-solovay_kitaev_algorithm>Christopher<nbsp>M.<nbsp>Dawson<localize|
+      <bibitem*|18><label|bib-solovay_kitaev_algorithm>Christopher<nbsp>M.<nbsp>Dawson<localize|
       and >Michael<nbsp>A.<nbsp>Nielsen. <newblock>The solovay-kitaev
       algorithm. <newblock><with|font-shape|italic|Quantum Info. Comput.>,
       6(1):81\U95, jan 2006.<newblock>
 
-      <bibitem*|18><label|bib-qaoa>Edward Farhi, Jeffrey Goldstone<localize|,
+      <bibitem*|19><label|bib-qaoa>Edward Farhi, Jeffrey Goldstone<localize|,
       and >Sam Gutmann. <newblock>A quantum approximate optimization
       algorithm. <newblock>2014.<newblock>
 
-      <bibitem*|19><label|bib-qc_adiabat>Edward Farhi, Jeffrey Goldstone, Sam
+      <bibitem*|20><label|bib-qc_adiabat>Edward Farhi, Jeffrey Goldstone, Sam
       Gutmann<localize|, and >Michael Sipser. <newblock>Quantum computation
       by adiabatic evolution. <newblock>2000.<newblock>
 
-      <bibitem*|20><label|bib-Farhi_1998>Edward Farhi<localize| and >Sam
+      <bibitem*|21><label|bib-Farhi_1998>Edward Farhi<localize| and >Sam
       Gutmann. <newblock>Quantum computation and decision trees.
       <newblock><with|font-shape|italic|Physical Review A>, 58(2):915\U928,
       aug 1998.<newblock>
 
-      <bibitem*|21><label|bib-adaboost>Yoav Freund<localize| and
+      <bibitem*|22><label|bib-adaboost>Yoav Freund<localize| and
       >Robert<nbsp>E Schapire. <newblock>A decision-theoretic generalization
       of on-line learning and an application to boosting.
       <newblock><with|font-shape|italic|Journal of Computer and System
       Sciences>, 55(1):119\U139, 1997.<newblock>
 
-      <bibitem*|22><label|bib-maxcut_sdp>Michel<nbsp>X.<nbsp>Goemans<localize|
+      <bibitem*|23><label|bib-maxcut_sdp>Michel<nbsp>X.<nbsp>Goemans<localize|
       and >David<nbsp>P.<nbsp>Williamson. <newblock>Improved approximation
       algorithms for maximum cut and satisfiability problems using
       semidefinite programming. <newblock><with|font-shape|italic|J. ACM>,
       42(6):1115\U1145, nov 1995.<newblock>
 
-      <bibitem*|23><label|bib-Grover_1998>Lov<nbsp>K.<nbsp>Grover.
+      <bibitem*|24><label|bib-Grover_1998>Lov<nbsp>K.<nbsp>Grover.
       <newblock>Quantum computers can search rapidly by using almost any
       transformation. <newblock><with|font-shape|italic|Physical Review
       Letters>, 80(19):4329\U4332, may 1998.<newblock>
 
-      <bibitem*|24><label|bib-Harrow_2009>Aram<nbsp>W.<nbsp>Harrow, Avinatan
+      <bibitem*|25><label|bib-Harrow_2009>Aram<nbsp>W.<nbsp>Harrow, Avinatan
       Hassidim<localize|, and >Seth Lloyd. <newblock>Quantum algorithm for
       linear systems of equations. <newblock><with|font-shape|italic|Physical
       Review Letters>, 103(15), oct 2009.<newblock>
 
-      <bibitem*|25><label|bib-Kempe_2003>J Kempe. <newblock>Quantum random
+      <bibitem*|26><label|bib-Kempe_2003>J Kempe. <newblock>Quantum random
       walks: an introductory overview. <newblock><with|font-shape|italic|Contemporary
       Physics>, 44(4):307\U327, jul 2003.<newblock>
 
-      <bibitem*|26><label|bib-heat>R.<nbsp>Landauer.
+      <bibitem*|27><label|bib-heat>R.<nbsp>Landauer.
       <newblock>Irreversibility and heat generation in the computing process.
       <newblock><with|font-shape|italic|IBM Journal of Research and
       Development>, 5(3):183\U191, 1961.<newblock>
 
-      <bibitem*|27><label|bib-qml>Seth Lloyd, Masoud Mohseni<localize|, and
+      <bibitem*|28><label|bib-qml>Seth Lloyd, Masoud Mohseni<localize|, and
       >Patrick Rebentrost. <newblock>Quantum algorithms for supervised and
       unsupervised machine learning. <newblock>2013.<newblock>
 
-      <bibitem*|28><label|bib-Lucas_2014>Andrew Lucas. <newblock>Ising
+      <bibitem*|29><label|bib-Lucas_2014>Andrew Lucas. <newblock>Ising
       formulations of many NP problems. <newblock><with|font-shape|italic|Frontiers
       in Physics>, 2, 2014.<newblock>
 
-      <bibitem*|29><label|bib-mike_and_ike>Michael<nbsp>A Nielsen<localize|
+      <bibitem*|30><label|bib-mike_and_ike>Michael<nbsp>A Nielsen<localize|
       and >Isaac<nbsp>L Chuang. <newblock><with|font-shape|italic|Quantum
       Computation and Quantum Information>. <newblock>Cambridge University
       Press, Cambridge, England, dec 2010.<newblock>
 
-      <bibitem*|30><label|bib-Peruzzo_2014>Alberto Peruzzo, Jarrod McClean,
+      <bibitem*|31><label|bib-Peruzzo_2014>Alberto Peruzzo, Jarrod McClean,
       Peter Shadbolt, Man-Hong Yung, Xiao-Qi Zhou, Peter<nbsp>J.<nbsp>Love,
       Alán Aspuru-Guzik<localize|, and >Jeremy<nbsp>L.<nbsp>O'Brien.
       <newblock>A variational eigenvalue solver on a photonic quantum
       processor. <newblock><with|font-shape|italic|Nature Communications>,
       5(1), jul 2014.<newblock>
 
-      <bibitem*|31><label|bib-Temme_2011>K.<nbsp>Temme,
+      <bibitem*|32><label|bib-Temme_2011>K.<nbsp>Temme,
       T.<nbsp>J.<nbsp>Osborne, K.<nbsp>G.<nbsp>Vollbrecht,
       D.<nbsp>Poulin<localize|, and >F.<nbsp>Verstraete. <newblock>Quantum
       metropolis sampling. <newblock><with|font-shape|italic|Nature>,
       471(7336):87\U90, mar 2011.<newblock>
 
-      <bibitem*|32><label|bib-van_Apeldoorn_2020>Joran van<nbsp>Apeldoorn,
+      <bibitem*|33><label|bib-van_Apeldoorn_2020>Joran van<nbsp>Apeldoorn,
       Andrá<nbsp>s Gilyén, Sander Gribling<localize|, and >Ronald
       de<nbsp>Wolf. <newblock>Quantum SDP-Solvers: better upper and lower
       bounds. <newblock><with|font-shape|italic|Quantum>, 4:230, feb
       2020.<newblock>
 
-      <bibitem*|33><label|bib-Wiebe_2012>Nathan Wiebe, Daniel
+      <bibitem*|34><label|bib-Wiebe_2012>Nathan Wiebe, Daniel
       Braun<localize|, and >Seth Lloyd. <newblock>Quantum algorithm for data
       fitting. <newblock><with|font-shape|italic|Physical Review Letters>,
       109(5), aug 2012.<newblock>
 
-      <bibitem*|34><label|bib-qcintro>Noson<nbsp>S.<nbsp>Yanofsky.
+      <bibitem*|35><label|bib-qcintro>Noson<nbsp>S.<nbsp>Yanofsky.
       <newblock>An introduction to quantum computing.
       <newblock>2007.<newblock>
 
-      <bibitem*|35><label|bib-Yung_2012>Man-Hong Yung<localize| and
+      <bibitem*|36><label|bib-Yung_2012>Man-Hong Yung<localize| and
       >Alá<nbsp>n Aspuru-Guzik. <newblock>A quantum\Uquantum metropolis
       algorithm. <newblock><with|font-shape|italic|Proceedings of the
       National Academy of Sciences>, 109(3):754\U759, jan 2012.<newblock>
@@ -1414,7 +1425,7 @@
 <\initial>
   <\collection>
     <associate|font|roman>
-    <associate|font-base-size|10>
+    <associate|font-base-size|11>
     <associate|font-family|rm>
     <associate|math-font|roman>
     <associate|page-medium|paper>
@@ -1425,94 +1436,97 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|1>>
-    <associate|auto-10|<tuple|3|4>>
-    <associate|auto-11|<tuple|3.1|4>>
-    <associate|auto-12|<tuple|3.2|5>>
-    <associate|auto-13|<tuple|3.3|5>>
-    <associate|auto-14|<tuple|4|6>>
-    <associate|auto-15|<tuple|4.1|6>>
-    <associate|auto-16|<tuple|4.2|6>>
-    <associate|auto-17|<tuple|4.3|7>>
-    <associate|auto-18|<tuple|5|7>>
-    <associate|auto-19|<tuple|5.1|7>>
+    <associate|auto-10|<tuple|3|5>>
+    <associate|auto-11|<tuple|3.1|5>>
+    <associate|auto-12|<tuple|3.2|6>>
+    <associate|auto-13|<tuple|3.3|6>>
+    <associate|auto-14|<tuple|4|7>>
+    <associate|auto-15|<tuple|4.1|7>>
+    <associate|auto-16|<tuple|4.2|7>>
+    <associate|auto-17|<tuple|4.3|8>>
+    <associate|auto-18|<tuple|5|8>>
+    <associate|auto-19|<tuple|5.1|8>>
     <associate|auto-2|<tuple|2|1>>
-    <associate|auto-20|<tuple|5.2|8>>
-    <associate|auto-21|<tuple|6|8>>
-    <associate|auto-22|<tuple|6.1|8>>
-    <associate|auto-23|<tuple|6.2|9>>
-    <associate|auto-24|<tuple|6.3|9>>
-    <associate|auto-25|<tuple|6.4|10>>
-    <associate|auto-26|<tuple|6.5|11>>
-    <associate|auto-27|<tuple|7|11>>
-    <associate|auto-28|<tuple|7|12>>
-    <associate|auto-29|<tuple|A|13>>
+    <associate|auto-20|<tuple|5.2|9>>
+    <associate|auto-21|<tuple|6|9>>
+    <associate|auto-22|<tuple|6.1|10>>
+    <associate|auto-23|<tuple|6.2|11>>
+    <associate|auto-24|<tuple|6.3|11>>
+    <associate|auto-25|<tuple|6.4|12>>
+    <associate|auto-26|<tuple|6.5|13>>
+    <associate|auto-27|<tuple|7|13>>
+    <associate|auto-28|<tuple|7|14>>
+    <associate|auto-29|<tuple|A|15>>
     <associate|auto-3|<tuple|2.1|1>>
-    <associate|auto-30|<tuple|B|14>>
-    <associate|auto-31|<tuple|B.1|14>>
-    <associate|auto-32|<tuple|2|14>>
-    <associate|auto-33|<tuple|B.2|15>>
+    <associate|auto-30|<tuple|B|16>>
+    <associate|auto-31|<tuple|B.1|16>>
+    <associate|auto-32|<tuple|2|16>>
+    <associate|auto-33|<tuple|B.2|17>>
     <associate|auto-4|<tuple|2.2|2>>
     <associate|auto-5|<tuple|2.2.1|2>>
-    <associate|auto-6|<tuple|2.2.2|2>>
+    <associate|auto-6|<tuple|2.2.2|3>>
     <associate|auto-7|<tuple|1|3>>
-    <associate|auto-8|<tuple|2.2.3|3>>
+    <associate|auto-8|<tuple|2.2.3|4>>
     <associate|auto-9|<tuple|2.3|4>>
-    <associate|bib-Berry_2006|<tuple|9|12>>
-    <associate|bib-Berry_2014_diffeq|<tuple|8|12>>
-    <associate|bib-Boyd2004-hu|<tuple|10|12>>
-    <associate|bib-Brassard_2002|<tuple|13|12>>
-    <associate|bib-Childs_2002|<tuple|15|12>>
-    <associate|bib-Childs_2009|<tuple|14|12>>
-    <associate|bib-Childs_2017|<tuple|16|12>>
-    <associate|bib-Farhi_1998|<tuple|20|12>>
-    <associate|bib-Grover_1998|<tuple|23|12>>
-    <associate|bib-Harrow_2009|<tuple|24|12>>
-    <associate|bib-Kempe_2003|<tuple|25|12>>
-    <associate|bib-Lucas_2014|<tuple|28|12>>
-    <associate|bib-Peruzzo_2014|<tuple|30|12>>
-    <associate|bib-Temme_2011|<tuple|31|12>>
-    <associate|bib-Wiebe_2012|<tuple|33|12>>
-    <associate|bib-Yung_2012|<tuple|35|12>>
-    <associate|bib-adaboost|<tuple|21|12>>
-    <associate|bib-adeqstd|<tuple|3|12>>
-    <associate|bib-fastlinsolv|<tuple|4|12>>
-    <associate|bib-heat|<tuple|26|12>>
-    <associate|bib-maxcut_sdp|<tuple|22|12>>
-    <associate|bib-mike_and_ike|<tuple|29|12>>
-    <associate|bib-mmw_sdp|<tuple|6|12>>
-    <associate|bib-mwa|<tuple|5|12>>
-    <associate|bib-qaoa|<tuple|18|12>>
-    <associate|bib-qc_adiabat|<tuple|19|12>>
-    <associate|bib-qcintro|<tuple|34|12>>
-    <associate|bib-qml|<tuple|27|12>>
-    <associate|bib-qml_rtfp|<tuple|1|12>>
-    <associate|bib-qsdp|<tuple|12|12>>
-    <associate|bib-qsdp2|<tuple|11|12>>
-    <associate|bib-qwalk_graphs|<tuple|2|12>>
-    <associate|bib-revcomp|<tuple|7|12>>
-    <associate|bib-solovay_kitaev_algorithm|<tuple|17|12>>
-    <associate|bib-van_Apeldoorn_2020|<tuple|32|12>>
+    <associate|bib-Berry_2006|<tuple|10|14>>
+    <associate|bib-Berry_2014_diffeq|<tuple|9|14>>
+    <associate|bib-Boyd2004-hu|<tuple|11|14>>
+    <associate|bib-Brassard_2002|<tuple|14|14>>
+    <associate|bib-Childs_2002|<tuple|16|14>>
+    <associate|bib-Childs_2009|<tuple|15|14>>
+    <associate|bib-Childs_2017|<tuple|17|14>>
+    <associate|bib-Farhi_1998|<tuple|21|14>>
+    <associate|bib-Grover_1998|<tuple|24|14>>
+    <associate|bib-Harrow_2009|<tuple|25|14>>
+    <associate|bib-Kempe_2003|<tuple|26|14>>
+    <associate|bib-Lucas_2014|<tuple|29|15>>
+    <associate|bib-Peruzzo_2014|<tuple|31|15>>
+    <associate|bib-Temme_2011|<tuple|32|15>>
+    <associate|bib-Wiebe_2012|<tuple|34|15>>
+    <associate|bib-Yung_2012|<tuple|36|15>>
+    <associate|bib-adaboost|<tuple|22|14>>
+    <associate|bib-adeqstd|<tuple|3|14>>
+    <associate|bib-axler|<tuple|7|14>>
+    <associate|bib-fastlinsolv|<tuple|4|14>>
+    <associate|bib-heat|<tuple|27|14>>
+    <associate|bib-maxcut_sdp|<tuple|23|14>>
+    <associate|bib-mike_and_ike|<tuple|30|15>>
+    <associate|bib-mmw_sdp|<tuple|6|14>>
+    <associate|bib-mwa|<tuple|5|14>>
+    <associate|bib-qaoa|<tuple|19|14>>
+    <associate|bib-qc_adiabat|<tuple|20|14>>
+    <associate|bib-qcintro|<tuple|35|15>>
+    <associate|bib-qml|<tuple|28|14>>
+    <associate|bib-qml_rtfp|<tuple|1|14>>
+    <associate|bib-qsdp|<tuple|13|14>>
+    <associate|bib-qsdp2|<tuple|12|14>>
+    <associate|bib-qwalk_graphs|<tuple|2|14>>
+    <associate|bib-revcomp|<tuple|8|14>>
+    <associate|bib-solovay_kitaev_algorithm|<tuple|18|14>>
+    <associate|bib-van_Apeldoorn_2020|<tuple|33|15>>
     <associate|bra_ket|<tuple|2.3|4>>
     <associate|ckt_diags|<tuple|1|3>>
-    <associate|density_operator|<tuple|A|13>>
-    <associate|hamiltonian_simulation|<tuple|3.3|5>>
-    <associate|mmw_sdp|<tuple|3|11>>
-    <associate|quantum_random_walks|<tuple|B|14>>
-    <associate|qubit_gates|<tuple|2.2.2|2>>
-    <associate|qwalk_plots|<tuple|2|14>>
+    <associate|density_operator|<tuple|A|15>>
+    <associate|hamiltonian_simulation|<tuple|3.3|6>>
+    <associate|mmw_sdp|<tuple|3|12>>
+    <associate|quantum_random_walks|<tuple|B|16>>
+    <associate|qubit_gates|<tuple|2.2.2|3>>
+    <associate|qwalk_plots|<tuple|2|16>>
     <associate|section_adiabat|<tuple|4|7>>
-    <associate|section_ampl|<tuple|3.1|4>>
-    <associate|section_hhl|<tuple|5|6>>
+    <associate|section_ampl|<tuple|3.1|5>>
+    <associate|section_hhl|<tuple|5|8>>
     <associate|section_qcintro|<tuple|2|1>>
-    <associate|section_qctools|<tuple|3|4>>
-    <associate|section_qpe|<tuple|3.2|5>>
-    <associate|section_sdp|<tuple|6|8>>
+    <associate|section_qctools|<tuple|3|5>>
+    <associate|section_qpe|<tuple|3.2|6>>
+    <associate|section_sdp|<tuple|6|9>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|bib>
+      axler
+
       qcintro
 
       mike_and_ike
@@ -1535,6 +1549,20 @@
 
       Childs_2009
 
+      qc_adiabat
+
+      qc_adiabat
+
+      qc_adiabat
+
+      Lucas_2014
+
+      adeqstd
+
+      qaoa
+
+      Peruzzo_2014
+
       Harrow_2009
 
       Berry_2006
@@ -1554,20 +1582,6 @@
       fastlinsolv
 
       Childs_2017
-
-      qc_adiabat
-
-      qc_adiabat
-
-      qc_adiabat
-
-      Lucas_2014
-
-      adeqstd
-
-      qaoa
-
-      Peruzzo_2014
 
       maxcut_sdp
 
@@ -1684,33 +1698,33 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-13>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>The
-      HHL algorithm for solving linear systems>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Adiabatic
+      quantum computation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-14><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|4.1<space|2spc>The algorithm
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|4.1<space|2spc>The quantum adiabatic
+      algorithm <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-15>>
 
-      <with|par-left|<quote|1tab>|4.2<space|2spc>Applications and limitations
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|4.2<space|2spc>The Ising model, and
+      quadratic binary optimization <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-16>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Adiabatic
-      quantum computation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-17><vspace|0.5fn>
-
-      <with|par-left|<quote|1tab>|5.1<space|2spc>The quantum adiabatic
+      <with|par-left|<quote|1tab>|4.3<space|2spc>A variational approximation
       algorithm <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-18>>
+      <no-break><pageref|auto-17>>
 
-      <with|par-left|<quote|1tab>|5.2<space|2spc>The Ising model, and
-      quadratic binary optimization <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>The
+      HHL algorithm for solving linear systems>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-18><vspace|0.5fn>
+
+      <with|par-left|<quote|1tab>|5.1<space|2spc>The algorithm
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-19>>
 
-      <with|par-left|<quote|1tab>|5.3<space|2spc>A variational approximation
-      algorithm <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|5.2<space|2spc>Applications and limitations
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-20>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Semidefinite
